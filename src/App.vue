@@ -23,6 +23,7 @@ export default {
     }
   },
   methods: {
+    // se añaden los tracks en un array de datos locales para poder manipularlos
     addTrack(track) {
       if (track.getType() === 'video') {
         this.videoTracks.push(track);
@@ -34,11 +35,17 @@ export default {
       })
     },
     addTrackListeners(track) {
+    // añade event listeners de los eventos de audio
+    // Este es solo un ejemplo, pero se deben añadir listeners a eventos de tracks locales y remotos
+    // como de conexión de usuarios remotos para definir el comportamiento de la app cuando alguien en la sala haga una acción
+    // Por ejemplo se deben añadir lísteners para conexiones de usuarios remotos para poder mostrarlos conectados en la pantalla personal
+    // así como para poder apagarles el micrófono desde el administrador de la sala, etc
       if (track.getType() === 'audio') {
         trackAudioListeners(track)
       }
     },
     muteAudio() {
+      // Funcionalidad para apagar micrófono 
       this.audioTracks.forEach(track => {
         if(!track.isMuted()) {
           track.mute()
@@ -48,7 +55,8 @@ export default {
       })
     },
     muteVideo() {
-        this.videoTracks.forEach(track => {
+        // Funcionalidad para apagar cámara
+      this.videoTracks.forEach(track => { 
         if(!track.isMuted()) {
           track.mute()
         } else {
@@ -58,10 +66,10 @@ export default {
     }
   },
   mounted() {
-    connect().then(connection => {
+    connect().then(connection => { // crea la conexión y añade una sala de llamadas
       return createAndJoinRoom(connection, 'prueba-vue-meet-indie');
     })
-    .then(room => {
+    .then(room => { // añade los canales locales de audio y video
       room.on(JitsiMeetJS.events.conference.TRACK_ADDED, async track => {
         await this.addTrack(track)
         this.addTrackListeners(track)

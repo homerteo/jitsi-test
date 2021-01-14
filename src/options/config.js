@@ -16,7 +16,7 @@ export default {
     enableRemb: true,
     enableTcc: true,
     resolution: 720,
-    constraints: {
+    constraints: { // establece el tamaño de los contenedores donde se visualizaran los Tracks
         video: {
             height: {
                 ideal: 720,
